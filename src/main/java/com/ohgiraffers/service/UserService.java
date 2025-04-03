@@ -23,11 +23,13 @@ public class UserService {
         this.userDao = new UserDao(conn);
     }
 
+    /*------------------------------------------------------------------------------------*/
     //전체유저 조회 메서드
     public List<User> getAllUsers() {
         return userDao.getAllUsers();
     }
 
+    /*------------------------------------------------------------------------------------*/
     //특정 유저 조회 메서드(이메일로 조회)
     public User getUserByEmail(String email) throws SQLException {
         User user = userDao.getUserByEmail(email);
@@ -38,7 +40,7 @@ public class UserService {
         return user;
     }
 
-
+    /*------------------------------------------------------------------------------------*/
     //사용자 등록   (이메일 중복 체크 후 추가)
 
     //이메일 유효성 검사
@@ -65,7 +67,7 @@ public class UserService {
     }
 
 
-    // 사용자 등록 메서드
+    // 사용자 등록
     public boolean addUser(User user) throws SQLException {
 
         // 이메일 유효성 검사
@@ -82,25 +84,28 @@ public class UserService {
 
         //역할 ID검증 (숫자 2,3,만 허용)
         int roleId = user.getRoleId();
-        if (roleId != 2 && roleId != 3) {
+        if (roleId != 2 && roleId != 3) { //and 문과 not 문을 둘다사용  -> 2,3 이 둘다 아니면? 예외 발생
             throw new IllegalArgumentException("역할 ID는 학생:2,강사:3 만 등록 가능합니다");
-            // 기능은 되는것같은데 이 멘트가 안나오고 "사용자 등록 중 오류가 발생했습니다." 라는 멘트가 나온다 ????
-            //일단 동작하니까 건들지 말자
+
         }
-
-
         //다 통과하면 반환해준다.
         return userDao.addUser(user);
 
     }
 
-    public boolean deleteUser(String email)throws SQLException {
+    /*------------------------------------------------------------------------------------*/
+
+    //유저 삭제
+    public boolean deleteUser(String email) throws SQLException {
         User user = userDao.getUserByEmail(email);
         if (user == null) {
             throw new IllegalArgumentException("삭제할 사용자를 찾을 수 없습니다");
         }
         return userDao.deleteUser(email);
     }
+    /*------------------------------------------------------------------------------------*/
+
+    //유저 수정하기
 
     public boolean editUser(User user) throws SQLException {
         //유저 확인

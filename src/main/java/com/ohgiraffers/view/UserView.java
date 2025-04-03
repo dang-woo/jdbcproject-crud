@@ -60,7 +60,7 @@ public class UserView {
 
     }
 
-
+    /*------------------------------------------------------------------------------------*/
     /**
      * 📌 1.전체 사용자 조회
      * - `UserService`의 `getAllUsers()` 메서드를 호출하여 사용자 목록을 출력
@@ -76,7 +76,7 @@ public class UserView {
         }
 
     }
-
+    /*------------------------------------------------------------------------------------*/
     /**
      * 📌 2. 단일 사용자 조회 (이메일로 조회)
      **/
@@ -100,7 +100,7 @@ public class UserView {
         }
 
     }
-
+    /*------------------------------------------------------------------------------------*/
     /**
      * 📌사용자 등록
      */
@@ -140,27 +140,26 @@ public class UserView {
         System.out.print("사용자 이름: ");
         String username = scanner.nextLine();
 
-
         System.out.print("비밀번호: ");
         String password = scanner.nextLine();
 
 
-        // 역할 아이디 숫자형 입력 (서비스에서 해야할것같은데 이미 뷰에서 만들어버림..)
+        // 역할 아이디 숫자형 입력
         while (true) {
             System.out.print("역할 ID:  '학생: 2 , 강사: 3 ' :");
             try {
-                roleId = scanner.nextInt();
+                roleId = scanner.nextInt(); // int형을 받도록함.
                 scanner.nextLine();
                 break;
-            } catch (InputMismatchException e) {
+            } catch (InputMismatchException e) { //int형이 아닐경우 예외를 발생시킨다
                 System.out.println("숫자만 입력해야 합니다. 학생: 2 , 강사: 3 중 하나를 선택해주세요.");
                 scanner.nextLine();
             }
         }
-
+        //
         User user = new User(0, username, email, password, roleId, null);
         try {
-            boolean success = userService.addUser(user);
+            boolean success = userService.addUser(user); // true값이 반환되면 성공
             if (success) {
                 System.out.println("사용자가 성공적으로 등록되었습니다.");
             }
@@ -170,7 +169,7 @@ public class UserView {
 
 
     }
-
+    /*------------------------------------------------------------------------------------*/
     /**
      * 📌 사용자 수정
      */
@@ -182,7 +181,7 @@ public class UserView {
         User existingUser;
         try {
             existingUser = userService.getUserByEmail(email); // 기존 사용자 조회
-            if (existingUser == null) {
+            if (existingUser == null) { //기존사용자가 null이라면
                 System.out.println("해당 이메일로 등록된 사용자가 없습니다.");
                 return;
             }
@@ -190,8 +189,11 @@ public class UserView {
             System.out.println("사용자 조회 중 오류가 발생했습니다.");
             return;
         }
+        //이메일로 조회를 하므로 이메일 수정 폼은 x
 
-        System.out.println("현재 이메일: " + existingUser.getEmail() + " (이메일은 수정 불가)");
+        System.out.println("나의 이메일: " + existingUser.getEmail() + " (이메일은 수정 불가)"); //내 이메일 보여줌
+
+        // 이름,비밀번호,역할 아이디 수정
         System.out.print("새로운 사용자 이름: ");
         String username = scanner.nextLine();
 
@@ -208,13 +210,12 @@ public class UserView {
             return;
         }
 
-        // 이메일은 기존 값 유지
         User user = new User(existingUser.getUserId(), username, existingUser.getEmail(), password, roleId, null);
         try {
-            boolean success = userService.editUser(user);
-            if (success) {
+            boolean success = userService.editUser(user); //유저서비스의 값을 success에 담아줌
+            if (success) { //success가 참이라면
                 System.out.println("사용자 정보가 성공적으로 수정되었습니다.");
-            } else {
+            } else { //거짓이라면
                 System.out.println("사용자 정보 수정에 실패하였습니다.");
             }
         } catch (SQLException e) {
@@ -224,7 +225,7 @@ public class UserView {
         }
     }
 
-
+    /*------------------------------------------------------------------------------------*/
     /**
      * 📌사용자 삭제
      * - 사용자 이메일을 입력받아 삭제
@@ -233,14 +234,14 @@ public class UserView {
 
 
         System.out.println("삭제할 사용자 이메일을 입력하세요: ");
-        String email = scanner.nextLine(); // 이메일 입력
+        String email = scanner.nextLine(); // 삭제할 사용자의 이메일 입력
         scanner.nextLine(); // 개행 문자 처리
 
         try {
-            boolean success = userService.deleteUser(email);
-            if (success) {
+            boolean success = userService.deleteUser(email); //유저서비스에서 받아온 값은 -> 불리언타입으로 success에 참 혹은 거짓을 담아줌
+            if (success) { //참이라면
                 System.out.println("사용자가 성공적으로 삭제되었습니다");
-            } else {
+            } else { //거짓이라면
                 System.out.println("사용자 삭제에 실패하였습니다");
             }
         }catch (Exception e) {
