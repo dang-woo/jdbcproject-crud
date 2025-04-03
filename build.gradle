@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.ohgiraffers'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
+    implementation group: 'com.mysql', name: 'mysql-connector-j', version: '8.3.0'
+
+    // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
+    // hikariCP는 현존하는 가장 빠르고 가벼운 커넥션 풀 라이브러리이다.
+    implementation group: 'com.zaxxer', name: 'HikariCP', version: '4.0.3'
+
+
+    // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.5.16'
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+}
+
+test {
+    useJUnitPlatform()
+}
