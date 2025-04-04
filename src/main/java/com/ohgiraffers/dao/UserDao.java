@@ -70,7 +70,7 @@ public class UserDao {
     /*------------------------------------------------------------------------------------*/
     //사용자 추가 CREATE
     public boolean addUser(User user) {
-        String sql = "";
+        String sql = "INSERT INTO users (username, email, password_hash, role_id, created_at) VALUES (?, ?, ?, ?, now())";
         try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, user.getUserName());
             ps.setString(2, user.getEmail());
